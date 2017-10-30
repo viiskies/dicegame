@@ -1,0 +1,22 @@
+.dice {
+	background: url(../Dice.png);
+	/*display: inline-block;*/
+	height: 200px;
+	width: 200px;
+	margin: 20px 20px;
+}
+
+body {
+	/*background-image: url(https://n6-img-fp.akamaized.net/free-vector/abstract-geometric-pattern-background_1319-242.jpg?size=338&ext=jpg);*/
+}
+
+#winings, h1 {
+	display: inline-block;
+}
+
+.dice1 { background-position: -11px -11px; }
+.dice2 { background-position: -235px -11px; }
+.dice3 { background-position: -458px -11px; }
+.dice4 { background-position: -12px -234px; }
+.dice5 { background-position: -241px -234px; }
+.dice6 { background-position: -462px -238px; }
