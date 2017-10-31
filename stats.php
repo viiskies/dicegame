@@ -1,5 +1,10 @@
 <?php 
 session_start();
+if (isset($_SESSION['username'])) {
+} else {
+// user is a guest
+    header('Location: login.php');
+}
 ?>
 
 <!DOCTYPE html>
