@@ -28,11 +28,13 @@ elseif(isset($_GET['top']) && $_GET['top'] != "") {
 	try {
 		include("inc/connection.php");
 
-		$sql = "SELECT * FROM games ORDER BY winings DESC LIMIT " . $_GET['top'] ."";
+		$sql = $conn->prepare("SELECT * FROM games ORDER BY winings DESC LIMIT ?");
+		
+		$sql->bindParam(1, $tops, PDO::PARAM_INT);
+		$tops = intval($_GET['top']);
 
-		$statement = $conn->query($sql);
-
-		$response['games'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+		$sql->execute();
+		$response['games'] = $sql->fetchAll(PDO::FETCH_ASSOC);
 
 		$conn = null;
 
@@ -64,7 +66,6 @@ elseif(isset($_POST['winings']) && $_POST['winings'] != "") {
 		$winings = $_POST['winings'];
 		$ip = $_SERVER['REMOTE_ADDR'];
 
-
 		$sql->execute();
 		$conn = null;
 		$response['message'] = ['type' => 'success','body' => 'Game was added'];
@@ -79,10 +80,10 @@ else  {
 	try {
 		include("inc/connection.php");
 
-		$sql = "SELECT * FROM games";
-
-		$statement = $conn->query($sql);
-		$response['games'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+		$sql = $conn->prepare("SELECT * FROM games");
+		
+		$sql->execute();
+		$response['games'] = $sql->fetchAll(PDO::FETCH_ASSOC);
 
 		$conn = null;
 
