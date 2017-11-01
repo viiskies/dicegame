@@ -10,14 +10,14 @@ if (isset($_SESSION['username'])) {
 
 if (isset($_POST['username']) ) {
 
-	$servername = "localhost";
-	$usernam = "root";
-	$passwor = "";
-	$database = "dices";
+	$db_servername = "localhost";
+	$db_database = "dices";
+	$db_username = "root";
+	$db_password = "";
 
 	try {
-		$conn = new PDO("mysql:host=$servername;dbname=$database", $usernam, $passwor);
-		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		include("inc/connection.php");
+		
 		$sql = "SELECT * FROM users";
 
 		$sql .= " WHERE username='" . $_POST['username'] . "'";

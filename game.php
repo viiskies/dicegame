@@ -2,18 +2,12 @@
 session_start();
 header("Content-type:application/json");
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "dices";
 
 // get user's all games
 if(isset($_GET['username']) && $_GET['username'] != "") {
-
 	try {
-		$conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+		include("inc/connection.php");
 
-		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$sql = $conn->prepare("SELECT * FROM games WHERE username = :username");
 
 		$sql->bindParam(':username', $playerName);
@@ -31,11 +25,8 @@ if(isset($_GET['username']) && $_GET['username'] != "") {
 
 // get high scores, 
 elseif(isset($_GET['top']) && $_GET['top'] != "") {
-
 	try {
-		// die();
-		$conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
-		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		include("inc/connection.php");
 
 		$sql = "SELECT * FROM games ORDER BY winings DESC LIMIT " . $_GET['top'] ."";
 
@@ -53,8 +44,7 @@ elseif(isset($_GET['top']) && $_GET['top'] != "") {
 // upload a played game to database
 elseif(isset($_POST['winings']) && $_POST['winings'] != "") {
 	try {
-		$conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
-		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		include("inc/connection.php");
 
 		$sql = $conn->prepare("INSERT INTO games (username, roll1, roll2, roll3, roll4, winings, ip, date) VALUES (:username, :roll1, :roll2, :roll3, :roll4, :winings, :ip, NOW())");
 
@@ -63,8 +53,8 @@ elseif(isset($_POST['winings']) && $_POST['winings'] != "") {
 		$sql->bindParam(':roll2', $roll2);
 		$sql->bindParam(':roll3', $roll3);		
 		$sql->bindParam(':roll4', $roll4);
-		$sql->bindParam(':ip', $ip);
 		$sql->bindParam(':winings', $winings);
+		$sql->bindParam(':ip', $ip);
 
 		$username = $_SESSION['username'];
 		$roll1 = $_POST['roll1'];
@@ -86,10 +76,9 @@ elseif(isset($_POST['winings']) && $_POST['winings'] != "") {
 
 // get all games player ever
 else  {
-	// die();
 	try {
-		$conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
-		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		include("inc/connection.php");
+
 		$sql = "SELECT * FROM games";
 
 		$statement = $conn->query($sql);

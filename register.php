@@ -1,18 +1,12 @@
 <?php
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "dices";
 $sameUsername = false;
 $passwordsDontMatch = false;
 
 if(isset($_POST['name']) && $_POST['name'] != "" && $_POST['password'] != "" && $_POST['repeatPassword'] != "") {
 
 	try {
-		$conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
-		// set the PDO error mode to exception
-		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		include("inc/connection.php");
 
 		$sqlq = "SELECT * FROM users WHERE username='" . $_POST['username'] . "'";
 		$statement = $conn->query($sqlq);
@@ -23,11 +17,11 @@ if(isset($_POST['name']) && $_POST['name'] != "" && $_POST['password'] != "" && 
 
 				$sql = $conn->prepare("INSERT INTO users (name, username, password) VALUES (:name, :username, :password)");
 
-				$sql->bindParam(':name', $name);
+				$sql->bindParam(':name', $_POST['name']);
 				$sql->bindParam(':username', $username);
 				$sql->bindParam(':password', $password);
 
-				$name = $_POST['name'];
+				// $name = $_POST['name'];
 				$username = $_POST['username'];
 				$password = password_hash($_POST["password"], PASSWORD_DEFAULT); 
 
@@ -35,7 +29,7 @@ if(isset($_POST['name']) && $_POST['name'] != "" && $_POST['password'] != "" && 
 				session_start();
 
 				$_SESSION['username'] = $username; 
-				$_SESSION['password'] = $_POST["password"];
+				$_SESSION['password'] = $password;
 
 				$response['message'] = ['type' => 'success','body' => 'User was added'];
 				$conn = null;
@@ -71,7 +65,7 @@ if(isset($_POST['name']) && $_POST['name'] != "" && $_POST['password'] != "" && 
 	<link rel="stylesheet" type="text/css" href="css/login.css">
 </head>
 <body>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
